@@ -45,14 +45,14 @@ const SignUp = () => {
                         errorMessage=data.error.message;
                     }
                     alert(errorMessage);
-                    throw new error(errorMessage);
+                    throw new Error(errorMessage);
                 })
             }
         })
         .then((data)=>{
             // console.log(data.Response)
             navigate('/')
-            let idToken=data.idToken;
+            const idToken=data.idToken;
             console.log(idToken)
             localStorage.setItem('token' ,idToken)
         })
