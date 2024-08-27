@@ -6,6 +6,7 @@ import Home from './Components/Home/Home';
 import AuthForm from './Components/SignUp/AuthForm';
 import { AuthContextprovider } from './Components/AuthContext/auth-context';
 import ContactDetails from './Components/ContactDetails/ContactDetails';
+import Profile from './Components/Profile/Profile';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<AuthForm />}/>
         <Route path='/contactDetails' element={<ContactDetails />} />
+        <Route pat='/profile' element={<Profile/>}/>
       </Routes>
       </BrowserRouter>
       
