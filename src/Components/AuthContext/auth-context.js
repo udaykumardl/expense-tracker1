@@ -5,7 +5,7 @@ const AuthContext=React.createContext({
 })
 
 export const AuthContextprovider=(props) =>{
-    const initialtoken=localStorage.setItem('token')
+    const initialtoken=localStorage.getItem('token')
     const [retrievedData, setRetrievedData]=useState(false);
     console.log('initialtoken',initialtoken)
 
@@ -14,7 +14,7 @@ export const AuthContextprovider=(props) =>{
         console.log('Retrieved Data',data)
         console.log('UseState Data',data)
     }
-    
+
     const contextvalue={
         token:initialtoken,
         profileData:retrievedData,

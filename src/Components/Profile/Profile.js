@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext ,useEffect} from "react";
 import AuthContext from "../AuthContext/auth-context";
 
 const Profile =() =>{
@@ -37,9 +37,16 @@ const Profile =() =>{
             }
         })
         .then((data) => {
-            console.log(data.users);
-            localStorage.setItem('profileData', JSON.stringify(data.users));
-            authcontext.data(data.users);
+            console.log("Fetched user data:",data.users);
+            if (data && data.users) {
+                const profileData = JSON.stringify(data.users);
+                console.log("Storing profileData: ", profileData);
+                
+                localStorage.setItem('profileData', profileData); // Corrected line
+                authcontext.data(data.users);
+            } else {
+                console.error("No valid user data found to store.");
+            }
         })
         .catch((err) => {
             alert(err.message);
