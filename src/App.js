@@ -8,6 +8,7 @@ import { AuthContextprovider } from './Components/AuthContext/auth-context';
 import ContactDetails from './Components/ContactDetails/ContactDetails';
 import Profile from './Components/Profile/Profile';
 import VerifyEmail from './Components/VerifyEmail/VerifyEmail';
+import ForgotPassword from './Components/ForgetPassword/ForgotPassword';
 
 
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/contactDetails' element={<ContactDetails />} />
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/verifyEmail' element={<VerifyEmail/>} />
+        <Route path='/forgotpassword' element={<ForgotPassword/>} />
       </Routes>
       </BrowserRouter>
 
