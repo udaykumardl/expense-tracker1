@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import classes from './AuthForm.module.css'
 import {useNavigate} from 'react-router'
 import { NavLink } from 'react-router-dom';
+import AuthContext from '../AuthContext/auth-context';
 
 const SignUp = () => {
     const emailInputRef=useRef();
     const passwordInputRef=useRef();
-    const confirmPasswordInputRef=useRef()
+    const confirmPasswordInputRef=useRef();
+    const authcontext=useContext(AuthContext);
 
     const [logIn,setLogIn]=useState(false);
 
@@ -16,87 +18,96 @@ const SignUp = () => {
       setLogIn(prevState=>!(prevState))
     }
 
-    const SubmitHandler=(event)=>{
-     event.preventDefault();
-
-     const enteredEmail=emailInputRef.current.value;
-     const enteredPassword=passwordInputRef.current.value;
-     const enteredConfirmPassword=confirmPasswordInputRef.current.value
-
-     if(logIn){
-        fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB47KuZmw9rfYwbJbr7GlQ-i6f4Gilvnrw',{
-            method:'POST',
-            body:JSON.stringify({
-                email:enteredEmail,
-                password:enteredPassword,
-                returnSecureToken:true
-            }),
-            headers:{
-                'Content-Type':'application/json'
-            }
-        }).then(res=>{
-            //setIsLOading(false)
-            if(res.ok){
-                console.log(res);
-                return res.json();
-            }else{
-                return res.json().then((data)=>{
-                    let errorMessage='Authentication Failed!';
-                    if(data && data.error.message){
-                        errorMessage=data.error.message;
-                    }
-                    alert(errorMessage);
-                    throw new Error(errorMessage);
-                })
-            }
-        })
-        .then((data)=>{
-            // console.log(data.Response)
-            navigate('/')
-            const idToken=data.idToken;
-            console.log(idToken)
-            localStorage.setItem('token' ,idToken)
-        })
-        .catch((err)=>{
-            alert(err.message);
-        })
-
-     }
-     else{
-      fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB47KuZmw9rfYwbJbr7GlQ-i6f4Gilvnrw',
-      {
-        method:'POST',
-        body:JSON.stringify({
-          email:enteredEmail,
-          password:enteredPassword,
-          returnSecureToken:true
-        }),
-        headers:{
-          'Content-Type':'application/json'
-        }
-      }).then(res=>{
-       // setIsLoading(false)
-        if(res.ok){
-           console.log('User has successfully signed up.')
-        }else{
-          return res.json().then((data) => {
-            let errorMessage = "Authentication Failed!";
-            if (data && data.error.message && data.error.message) {
-              errorMessage = data.error.message;
-            }
-            alert(errorMessage);
-           // throw new Error(errorMessage)
+    const SubmitHandler = (event) => {
+      event.preventDefault();
+  
+      if (!emailInputRef.current || !passwordInputRef.current || (!logIn && !confirmPasswordInputRef.current)) {
+          alert('One or more input fields are missing.');
+          return;
+      }
+  
+      const enteredEmail = emailInputRef.current.value;
+      const enteredPassword = passwordInputRef.current.value;
+  
+      if (logIn) {
+          fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB47KuZmw9rfYwbJbr7GlQ-i6f4Gilvnrw', {
+              method: 'POST',
+              body: JSON.stringify({
+                  email: enteredEmail,
+                  password: enteredPassword,
+                  returnSecureToken: true,
+              }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          })
+          .then(res => {
+              if (res.ok) {
+                  return res.json();
+              } else {
+                  return res.json().then((data) => {
+                      let errorMessage = 'Authentication Failed!';
+                      if (data && data.error.message) {
+                          errorMessage = data.error.message;
+                      }
+                      alert(errorMessage);
+                      throw new Error(errorMessage);
+                  });
+              }
+          })
+          .then((data) => {
+              navigate('/dailyexpenses');
+              const idToken = data.idToken;
+              localStorage.setItem('token', idToken);
+              authcontext.logInHandler();
+          })
+          .catch((err) => {
+              alert(err.message);
           });
-        }
-      })
-      .catch(error => {
-        console.error('Error during sign up:', error);
+  
+      } else {
+          const enteredConfirmPassword = confirmPasswordInputRef.current.value;
+  
+          if (enteredPassword !== enteredConfirmPassword) {
+              alert('Passwords do not match!');
+              return;
+          }
+  
+          fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB47KuZmw9rfYwbJbr7GlQ-i6f4Gilvnrw', {
+              method: 'POST',
+              body: JSON.stringify({
+                  email: enteredEmail,
+                  password: enteredPassword,
+                  returnSecureToken: true
+              }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          })
+          .then(res => {
+              if (res.ok) {
+                  console.log('User has successfully signed up.');
+              } else {
+                  return res.json().then((data) => {
+                      let errorMessage = "Authentication Failed!";
+                      if (data && data.error.message) {
+                          errorMessage = data.error.message;
+                      }
+                      alert(errorMessage);
+                  });
+              }
+          })
+          .catch(error => {
+              console.error('Error during sign up:', error);
+  
+              passwordInputRef.current.value = '';
+              confirmPasswordInputRef.current.value = '';
+          });
+      }
+  };
+  
 
-        passwordInputRef.current.value = '';
-        confirmPasswordInputRef.current.value = '';
-    });
-     }
-    }
+
   return (
     <div className={classes.div}>
     <form className={classes.form} onSubmit={SubmitHandler}>

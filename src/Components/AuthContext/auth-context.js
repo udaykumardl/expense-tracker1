@@ -7,6 +7,7 @@ const AuthContext=React.createContext({
 export const AuthContextprovider=(props) =>{
     const initialtoken=localStorage.getItem('token')
     const [retrievedData, setRetrievedData]=useState(false);
+    const [loggedIn,setLoggedIn]=useState(true);
     console.log('initialtoken',initialtoken)
 
     const updateData=(data)=>{
@@ -18,13 +19,22 @@ export const AuthContextprovider=(props) =>{
         localStorage.removeItem('token');
         localStorage.removeItem('email');
         localStorage.removeItem('profileData')
+        setLoggedIn(prevstate=>!prevstate)
+        console.log('logout',loggedIn)
+    }
+    const logInHandler=()=>{
+        setLoggedIn(prevstate=>!prevstate)
+        console.log('login',loggedIn)
+
     }
 
     const contextvalue={
         token:initialtoken,
         profileData:retrievedData,
         data:updateData,
-        logout:logoutHandler
+        logout:logoutHandler,
+        logInHandler:logInHandler,
+        logIn:loggedIn
     }
 
     return(

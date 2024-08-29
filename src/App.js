@@ -9,6 +9,7 @@ import ContactDetails from './Components/ContactDetails/ContactDetails';
 import Profile from './Components/Profile/Profile';
 import VerifyEmail from './Components/VerifyEmail/VerifyEmail';
 import ForgotPassword from './Components/ForgetPassword/ForgotPassword';
+import DailyExpenses from './Components/DailyExpenses/DailyExpenses';
 
 
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/verifyEmail' element={<VerifyEmail/>} />
         <Route path='/forgotpassword' element={<ForgotPassword/>} />
+        <Route path='/dailyExpenses' element={<DailyExpenses/>} />
       </Routes>
       </BrowserRouter>
 
