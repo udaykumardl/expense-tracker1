@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import classes from './DailyExpenses.module.css'
+import CartContext from "../CartContext/cart-context";
 
 const DailyExpenses=()=>{
     const [description,setDescription] =useState('')
     const [moneyspent,setMoneySpent] =useState('')
     const [category,setCategory] =useState('');
     const [data,setData]=useState([]);
+
+    const cartcontext=useContext(CartContext)
 
     const descriptionHandler=(event)=>{
         setDescription(event.target.value)
@@ -25,6 +28,7 @@ const DailyExpenses=()=>{
             category
         }
         setData((prevState)=>[...prevState,newobj])
+        cartcontext.addItem(newobj)
         console.log(data)
         setDescription('')
         setMoneySpent('')

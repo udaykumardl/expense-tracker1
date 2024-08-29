@@ -4,17 +4,21 @@ import Navbar from './Components/Navbar/Navbar';
 import {BrowserRouter,Route, Routes} from 'react-router-dom';
 import Home from './Components/Home/Home';
 import AuthForm from './Components/SignUp/AuthForm';
-import { AuthContextprovider } from './Components/AuthContext/auth-context';
+
 import ContactDetails from './Components/ContactDetails/ContactDetails';
 import Profile from './Components/Profile/Profile';
 import VerifyEmail from './Components/VerifyEmail/VerifyEmail';
 import ForgotPassword from './Components/ForgetPassword/ForgotPassword';
 import DailyExpenses from './Components/DailyExpenses/DailyExpenses';
+import CartProvider from './Components/CartContext/CartProvider';
+import { AuthContextprovider } from './Components/AuthContext/auth-context';
+
 
 
 
 function App() {
   return (
+    <CartProvider>
     <AuthContextprovider>
    
       <BrowserRouter>
@@ -28,10 +32,12 @@ function App() {
         <Route path='/verifyEmail' element={<VerifyEmail/>} />
         <Route path='/forgotpassword' element={<ForgotPassword/>} />
         <Route path='/dailyExpenses' element={<DailyExpenses/>} />
+      
       </Routes>
       </BrowserRouter>
-
-    </AuthContextprovider>
+      </AuthContextprovider>
+    
+    </CartProvider>
   );
 }
 
