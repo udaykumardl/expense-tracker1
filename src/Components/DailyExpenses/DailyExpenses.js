@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import classes from './DailyExpenses.module.css'
+
+import ShowDailyExpenses from "../ShowDailyExpenses/ShowDailyExpenses";
 import CartContext from "../CartContext/cart-context";
 
 const DailyExpenses=()=>{
     const [description,setDescription] =useState('')
-    const [moneyspent,setMoneySpent] =useState('')
+    const [moneySpent,setMoneySpent] =useState('')
     const [category,setCategory] =useState('');
     const [data,setData]=useState([]);
 
@@ -24,7 +26,7 @@ const DailyExpenses=()=>{
         event.preventDefault();
         let newobj={
             description,
-            moneyspent,
+            moneySpent,
             category
         }
         setData((prevState)=>[...prevState,newobj])
@@ -44,7 +46,7 @@ const DailyExpenses=()=>{
                 <label htmlFor="description"  className={classes.label}>Description</label>
                 <input type="text" id="description" onChange={descriptionHandler} value={description} className={classes.input}/>
                 <label htmlFor="moneyspent" className={classes.label}>Money Spent</label>
-                <input  type="number" id="moneyspent" onChange={moneySpentHandler} value={moneyspent} className={classes.input}/>
+                <input  type="number" id="moneyspent" onChange={moneySpentHandler} value={moneySpent} className={classes.input}/>
                 <label htmlFor="category" className={classes.label}>Category:</label>
 
                 <select name="category" id="category" onChange={categoryHandler} value={category} className={classes.input}>
@@ -55,6 +57,13 @@ const DailyExpenses=()=>{
                 </select>
                 <button type="submit" className={classes.button}>Add Expenses</button>
             </form>
+            <ShowDailyExpenses data={data}
+             description={description}
+             setDescription={setDescription}
+             moneySpent={moneySpent}
+             setMoneySpent={setMoneySpent}
+             category={setCategory}
+             setCategory={setCategory}/>
 
         </div>
     )
