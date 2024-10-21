@@ -1,14 +1,21 @@
 
 import React, { useContext ,useEffect} from "react";
-import AuthContext from "../AuthContext/auth-context";
+// import AuthContext from "../AuthContext/auth-context";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateData } from '../Reducers/AuthSlice';
+
 
 const Profile =() =>{
-    const authcontext=useContext(AuthContext);
+    // const authcontext=useContext(AuthContext);
+    const token=useSelector(state=>state.token)
+    const retrievedData=useSelector(state=>state.retrievedData)
+    const dispatch=useDispatch()
+
 
     useEffect(() => {
         const storedProfileData = localStorage.getItem('profileData');
         if (storedProfileData) {
-            authcontext.data(JSON.parse(storedProfileData));
+            dispatch(updateData(JSON.parse(storedProfileData)));
         }
     }, []);
 
@@ -18,7 +25,7 @@ const Profile =() =>{
             {
                 method: "POST",
                 body: JSON.stringify({
-                    idToken: authcontext.token,
+                    idToken: token,
                 }),
                 headers: {
                     "content-type": "application/json",
@@ -43,7 +50,7 @@ const Profile =() =>{
                 console.log("Storing profileData: ", profileData);
                 
                 localStorage.setItem('profileData', profileData); // Corrected line
-                authcontext.data(data.users);
+                dispatch(updateData(data.users));
             } else {
                 console.error("No valid user data found to store.");
             }
@@ -57,7 +64,7 @@ const Profile =() =>{
     return(
         <div>
             <h1>Your Profile</h1>
-            {authcontext.profileData &&authcontext.profileData.map((profile,index)=>(
+            {retrievedData && retrievedData.map((profile,index)=>(
              <div key={index}>
                <h3>Name:</h3>
                <p>{profile.displayName}</p>

@@ -5,6 +5,14 @@ import ShowDailyExpenses from "../ShowDailyExpenses/ShowDailyExpenses";
 import CartContext from "../CartContext/cart-context";
 
 const DailyExpenses=()=>{
+    const buttonStyle = {
+        backgroundColor: 'blue',
+        color: 'white',
+        padding: '10px 20px',
+        border: 'none',
+        borderRadius: '5px',
+        margin:'5px'
+      };
     const [description,setDescription] =useState('')
     const [moneySpent,setMoneySpent] =useState('')
     const [category,setCategory] =useState('');
@@ -57,6 +65,7 @@ const DailyExpenses=()=>{
                 </select>
                 <button type="submit" className={classes.button}>Add Expenses</button>
             </form>
+            <button style={buttonStyle}>Buy Premium</button>
             <ShowDailyExpenses data={data}
              description={description}
              setDescription={setDescription}

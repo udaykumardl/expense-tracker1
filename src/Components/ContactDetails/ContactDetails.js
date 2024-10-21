@@ -1,15 +1,17 @@
 
 import React, { useContext, useRef } from "react";
 import classes from './ContactDetails.module.css'
-import AuthContext from "../AuthContext/auth-context";
+// import AuthContext from "../AuthContext/auth-context";
+import {useSelector, useDispatch} from 'react-redux'
 
 const ContactDetails =() =>{
+    const token=useSelector(state=>state.token)
     const FullNameInputRef=useRef()
     const photoUrlInputRef= useRef()
 
-    const authcontext=useContext(AuthContext)
+    // const authcontext=useContext(AuthContext)
     const SubmitHandler=(event)=>{
-        console.log('Token',authcontext.token)
+        console.log('Token',token)
         event.preventDefault();
 
         const enteredFullName=FullNameInputRef.current.value;
@@ -19,7 +21,7 @@ const ContactDetails =() =>{
 
             method: 'POST',
             body: JSON.stringify({
-              idToken: authcontext.token,
+              idToken: token,
               displayName: enteredFullName,
               photoUrl:enteredPhotoUrl,
               returnSecureToken: true
