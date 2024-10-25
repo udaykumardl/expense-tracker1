@@ -1,11 +1,15 @@
 
 import React, { useState } from "react";
 import classes from './ForgotPassword.module.css'
+import { useSelector } from "react-redux";
 
 
 const ForgotPassword=()=>{
     const [email, setEmail]=useState('');
     const [loading,setLoading]=useState(false);
+
+    const theme=useSelector(state=>state.thememode.theme)
+
 
     const emailChangeHandler=(event)=>{
         setEmail(event.target.value)
@@ -47,20 +51,23 @@ const ForgotPassword=()=>{
             alert(err.message);
           });
 
-    }
-
+        const divClass=theme?classes.darkdiv:classes.div
+        const formClass=theme?classes.darkform:classes.form
+        const buttonClass=theme?classes.darkbutton:classes.button
+        const labelClass=theme?classes.darklabel:classes.label
+    
     return(
-        <div className={classes.div}>
-            <form onSubmit={submitHandler}  className={classes.form}>
-                <label htmlFor="email" className={classes.input}>Enter Your Email</label>
+        <div className={divClass}>
+            <form onSubmit={submitHandler}  className={formClass}>
+                <label htmlFor="email" className={labelClass}>Enter Your Email</label>
                 <input type='email' id='email' value={email} onChange={emailChangeHandler} className={classes.input} />
 
-                <button type="submit" className={classes.button}>{loading ? "Loading..." : "Forgot Password"}</button>
+                <button type="submit" className={buttonClass}>{loading ? "Loading..." : "Forgot Password"}</button>
                
             </form>
         </div>
     )
 
-}
+}}
 
 export default ForgotPassword;

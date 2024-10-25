@@ -14,7 +14,6 @@ import CartProvider from './Components/CartContext/CartProvider';
 
 
 
-
 function App() {
   return (
     <CartProvider>
