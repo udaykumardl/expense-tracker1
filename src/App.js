@@ -11,6 +11,7 @@ import VerifyEmail from './Components/VerifyEmail/VerifyEmail';
 import ForgotPassword from './Components/ForgetPassword/ForgotPassword';
 import DailyExpenses from './Components/DailyExpenses/DailyExpenses';
 import CartProvider from './Components/CartContext/CartProvider';
+import Greeting from './Components/Greeting';
 
 
 
@@ -36,6 +37,7 @@ function App() {
 
     </AuthContextprovider>
     </CartProvider>
+    <Greeting/>
      <a href=''>Hello React</a>
     </div>
   );

@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import Greetings from "./Greetings";
+import Greeting from "./Greeting";
 
 describe('Greeting component',()=>{
     test('renders Hello World as a text',()=>{
         //Arrange
-        render(<Greetings/>)
+        render(<Greeting/>)
 
         //Act
         //...nothing
