@@ -16,6 +16,7 @@ import CartProvider from './Components/CartContext/CartProvider';
 
 function App() {
   return (
+    <div>
     <CartProvider>
     <AuthContextprovider>
    
@@ -35,7 +36,8 @@ function App() {
 
     </AuthContextprovider>
     </CartProvider>
-    
+     <a href=''>Hello React</a>
+    </div>
   );
 }
 
