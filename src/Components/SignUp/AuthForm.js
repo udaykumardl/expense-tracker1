@@ -2,23 +2,26 @@ import React, { useContext, useRef, useState } from 'react'
 import classes from './AuthForm.module.css'
 import {useNavigate} from 'react-router'
 import { NavLink } from 'react-router-dom';
-import AuthContext from '../AuthContext/auth-context';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch,useSelector } from 'react-redux';
 import { logInHandler } from '../Reducers/AuthSlice';
+import CartContext from '../CartContext/cart-context';
 
 const SignUp = () => {
     const emailInputRef=useRef();
     const passwordInputRef=useRef();
     const confirmPasswordInputRef=useRef();
-    const dispatch=useDispatch
-    const authcontext=useContext(AuthContext);
+    const dispatch=useDispatch();
+    const cartcontext=useContext(CartContext)
+    const[ loggedIn,setLoggedIn]=useState(true)
+    // const authcontext=useContext(AuthContext);
 
-    const [logIn,setLogIn]=useState(false);
+    // const [logIn,setLogIn]=useState(false);
 
     const navigate=useNavigate()
 
     const switchAuthModeHandler=()=>{
-      setLogIn(prevState=>!(prevState))
+      setLogIn(prevState=>!(prev))
     }
 
     const SubmitHandler = (event) => {
@@ -44,72 +47,70 @@ const SignUp = () => {
                   'Content-Type': 'application/json'
               }
           })
-          .then(res => {
-              if (res.ok) {
-                  return res.json();
-              } else {
-                  return res.json().then((data) => {
-                      let errorMessage = 'Authentication Failed!';
-                      if (data && data.error.message) {
-                          errorMessage = data.error.message;
-                      }
-                      alert(errorMessage);
-                      throw new Error(errorMessage);
-                  });
+        
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error('Authentication Failed');
               }
           })
-          .then((data) => {
-              navigate('/dailyexpenses');
-              const idToken = data.idToken;
-              localStorage.setItem('token', idToken);
-              dispatch(logInHandler());
-          })
-          .catch((err) => {
-              alert(err.message);
-          });
-  
-      } else {
-          const enteredConfirmPassword = confirmPasswordInputRef.current.value;
-  
-          if (enteredPassword !== enteredConfirmPassword) {
-              alert('Passwords do not match!');
-              return;
-          }
-  
-          fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB47KuZmw9rfYwbJbr7GlQ-i6f4Gilvnrw', {
-              method: 'POST',
-              body: JSON.stringify({
-                  email: enteredEmail,
-                  password: enteredPassword,
-                  returnSecureToken: true
-              }),
-              headers: {
-                  'Content-Type': 'application/json'
-              }
-          })
-          .then(res => {
-              if (res.ok) {
-                  console.log('User has successfully signed up.');
-              } else {
-                  return res.json().then((data) => {
-                      let errorMessage = "Authentication Failed!";
-                      if (data && data.error.message) {
-                          errorMessage = data.error.message;
-                      }
-                      alert(errorMessage);
-                  });
-              }
+
+          .then(data => {
+
+            localStorage.setItem('token', data.idToken);
+            localStorage.setItem('email', enteredEmail);
+
+            dispatch(logInHandler());
+            
+            cartcontext.fetchData(); 
+
+
+            navigate('/dailyexpenses');
           })
           .catch(error => {
-              console.error('Error during sign up:', error);
-  
-              passwordInputRef.current.value = '';
-              confirmPasswordInputRef.current.value = '';
-          });
+          console.error('Error during login:', error);
+          alert('Authentication Failed');
+        });
       }
-  };
-  
 
+      else{
+        const enteredConfirmPassword = confirmPasswordInputRef.current.value;
+        fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCyzE7q_jL2tqmuLQQXUYBsDY2OgHdHd0E',
+        {
+          method:'POST',
+          body:JSON.stringify({
+            email:enteredEmail,
+            password:enteredPassword,
+            returnSecureToken:true
+          }),
+          headers:{
+            'Content-Type':'application/json'
+          }
+        }).then(res=>{
+         // setIsLoading(false)
+          if(res.ok){
+            navigate('/dailyexpenses')
+             console.log('User has successfully signed up.')
+          }else{
+            return res.json().then((data) => {
+              let errorMessage = "Authentication Failed!";
+              if (data && data.error.message && data.error.message) {
+                errorMessage = data.error.message;
+              }
+              alert(errorMessage);
+             // throw new Error(errorMessage)
+            });
+          }
+        })
+       .catch(error => {
+          console.error('Error during sign up:', error);
+
+          passwordInputRef.current.value = '';
+          confirmPasswordInputRef.current.value = '';
+       });
+    }
+};
 
   return (
     <div className={classes.div}>
