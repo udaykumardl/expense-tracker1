@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import {BrowserRouter,Route, Routes} from 'react-router-dom';
@@ -11,9 +11,6 @@ import VerifyEmail from './Components/VerifyEmail/VerifyEmail';
 import ForgotPassword from './Components/ForgetPassword/ForgotPassword';
 import DailyExpenses from './Components/DailyExpenses/DailyExpenses';
 import CartProvider from './Components/CartContext/CartProvider';
-import Greeting from './Components/Greeting';
-
-
 
 function App() {
   return (
@@ -37,8 +34,8 @@ function App() {
 
     </AuthContextprovider>
     </CartProvider>
-    <Greeting/>
-     <a href=''>Hello React</a>
+    
+   
     </div>
   );
 }
